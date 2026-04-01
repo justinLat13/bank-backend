@@ -5,14 +5,14 @@ steps:
     args:
       - build
       - '-t'
-      - 'northamerica-northeast2-docker.pkg.dev/molten-unison-462818-r2/app-repo/bank-backend:$COMMIT_SHA'
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA'
       - .
 
     id: Build Backend Container Image
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - 'northamerica-northeast2-docker.pkg.dev/molten-unison-462818-r2/app-repo/bank-backend:$COMMIT_SHA'
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA'
     id: Push Backend Image to Artifact Registry
 
   - name: gcr.io/cloud-builders/gcloud
@@ -21,19 +21,18 @@ steps:
       - deploy
       - bank-backend
       - '--image'
-      - 'northamerica-northeast2-docker.pkg.dev/molten-unison-462818-r2/app-repo/bank-backend:$COMMIT_SHA'
+      - '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA'
       - '--region'
-      - northamerica-northeast2
+      - $_DEPLOY_REGION
       - '--platform'
-      - managed
+      - $_PLATFORM
       - '--port'
       - '8080'
       - '--timeout'
       - '900'
     id: Deploy Backend to Cloud Run
-
 images:
-  - 'northamerica-northeast2-docker.pkg.dev/molten-unison-462818-r2/app-repo/bank-backend:$COMMIT_SHA'
+  - '$_GCR_HOSTNAME/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA'
 options:
   logging: CLOUD_LOGGING_ONLY
 timeout: 1200s
