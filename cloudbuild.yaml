@@ -5,14 +5,14 @@ steps:
     args:
       - build
       - '-t'
-      - 'us-central1-docker.pkg.dev/gcp-class-14/justin-repo/bank-backend-justin:$COMMIT_SHA'
+      - 'northamerica-northeast1-docker.pkg.dev/gcp-class-14/justin-repo/bank-backend-justin:$COMMIT_SHA'
       - .
 
     id: Build Backend Container Image
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - 'us-central1-docker.pkg.dev/gcp-class-14/justin-repo/bank-backend-justin:$COMMIT_SHA'
+      - 'northamerica-northeast1-docker.pkg.dev/gcp-class-14/justin-repo/bank-backend-justin:$COMMIT_SHA'
     id: Push Backend Image to Artifact Registry
 
   - name: gcr.io/cloud-builders/gcloud
@@ -21,9 +21,9 @@ steps:
       - deploy
       - bank-backend
       - '--image'
-      - 'us-central1-docker.pkg.dev/gcp-class-14/justin-repo/bank-backend-justin:$COMMIT_SHA'
+      - 'northamerica-northeast1-docker.pkg.dev/gcp-class-14/justin-repo/bank-backend-justin:$COMMIT_SHA'
       - '--region'
-      - us-central1
+      - northamerica-northeast1
       - '--platform'
       - managed
       - '--port'
@@ -32,7 +32,7 @@ steps:
       - '900'
     id: Deploy Backend to Cloud Run
 images:
-  - 'us-central1-docker.pkg.dev/gcp-class-14/justin-repo/bank-backend-justin:$COMMIT_SHA'
+  - 'northamerica-northeast1-docker.pkg.dev/gcp-class-14/justin-repo/bank-backend-justin:$COMMIT_SHA'
 options:
   logging: CLOUD_LOGGING_ONLY
 timeout: 1200s
